@@ -1,0 +1,19 @@
+
+FROM node:24-bookworm-slim
+
+WORKDIR /usr/src/app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openssl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY package.json package-lock.json turbo.json tsconfig.json ./
+COPY apps ./apps
+COPY packages ./packages
+
+RUN npm ci
+RUN npm run db:generate
+
+RUN npx turbo run build --filter=docs...
+
+CMD ["npm", "run", "start-user-app"]
