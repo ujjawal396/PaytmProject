@@ -1,3 +1,4 @@
+
 name: Build and Deploy to Docker Hub
 
 on:
@@ -44,4 +45,6 @@ jobs:
               --restart unless-stopped \
               -p 3001:3000 \
               -e NEXTAUTH_URL="${{ secrets.NEXTAUTH_URL }}" \
+              -e NEXTAUTH_SECRET="${{ secrets.NEXTAUTH_SECRET }}" \
+              -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
               vali5456/paytmproject:latest
